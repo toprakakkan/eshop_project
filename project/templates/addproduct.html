@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<style>
+    .form-group textarea {
+        resize: none; 
+        height: 150px; 
+      }
+</style>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Add New Product</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="alert alert-{{ messages[0][0] }}">
+              {{ messages[0][1] }}
+            </div>
+          {% endif %}
+        {% endwith %}
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.category_id.label(class="form-control-label") }}
+                {{ form.category_id(class="form-control") }}
+                {% for error in form.category_id.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.name.label(class="form-control-label") }}
+                {{ form.name(class="form-control") }}
+                {% for error in form.name.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.price.label(class="form-control-label") }}
+                {{ form.price(class="form-control") }}
+                {% for error in form.price.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.description.label(class="form-control-label") }}
+                {{ form.description(class="form-control") }}
+                {% for error in form.description.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.image_url.label(class="form-control-label") }}
+                {{ form.image_url(class="form-control") }}
+                {% for error in form.image_url.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
+    </div>
+</body>
+</html>

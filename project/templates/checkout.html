@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-5">Checkout</h1>
+    <div class="cart-summary">
+        <h2>Order Summary</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.product_name }}</td>
+                    <td>{{ item.product_price }}₺</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.total_price }}₺</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h3>Total Price: {{ total_price }}₺</h3>
+    </div>
+    <div class="checkout-form mt-5">
+        <h2>Billing Information</h2>
+        <form action="{{ url_for('checkout.go_checkout') }}" method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control") }}
+                {% for error in form.name.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.adress.label(class="form-label") }}
+                {{ form.adress(class="form-control") }}
+                {% for error in form.adress.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control") }}
+                {% for error in form.email.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.credit_card.label(class="form-label") }}
+                {{ form.credit_card(class="form-control") }}
+                {% for error in form.credit_card.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const cartIcon = document.getElementById('cart-icon');
+        if (cartIcon) {
+            cartIcon.style.pointerEvents = 'none';
+        }
+        setupQuantityButtons();
+    });
+</script>
+{% endblock %}

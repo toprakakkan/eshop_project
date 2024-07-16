@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Blog - My Blog
+{% endblock %}
+
+{% block content %}
+<div class="blog-home">
+    <h1>Blog</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="alert alert-{{ messages[0][0] }}">
+        {{ messages[0][1] }}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="blog-posts">
+        {% for post in posts %}
+        <div class="blog-post">
+            <h3><a class="blog-title" href="{{ url_for('blog.post', blog_id=post.blog_id) }}">{{ post.blog_title }}</a>
+            </h3>
+
+            <img src="{{ post.blog_fotoUrl }}" alt="{{ post.blog_title }}" class="post-image">
+            <p class="post-content">{{ post.blog_content[:200] }}...</p>
+            <p class="post-meta">By <b>{{ post.author }}</b> on {{ post.blog_date }} | <b>{{ post.categories | join(',
+                    ') }}</b></p>
+            <div class="read-more-wrapper">
+                <a href="{{ url_for('blog.post', blog_id=post.blog_id) }}" class="read-more">Read More</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="{{ url_for('blog.blog_home', page=page-1) }}" class="page-link">Previous</a>
+        {% endif %}
+
+        {% for p in range(1, total_pages + 1) %}
+        <a href="{{ url_for('blog.blog_home', page=p) }}" class="page-link {% if p == page %}active{% endif %}">{{ p
+            }}</a>
+        {% endfor %}
+
+        {% if page < total_pages %} <a href="{{ url_for('blog.blog_home', page=page+1) }}" class="page-link">Next</a>
+            {% endif %}
+    </div>
+</div>
+{% endblock %}

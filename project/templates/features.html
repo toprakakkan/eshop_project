@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}Features{% endblock %}
+
+{% block content %}
+<div class="features-container">
+    <h1>Cart Items</h1>
+    <div class="cart-items">
+        {% for item in cart_items %}
+        <div class="cart-item">
+            <img src="{{ item.product_picture_url }}" alt="{{ item.product_name }}" class="cart-item-image">
+            <div>
+                <p>{{ item.product_name }} - {{ item.quantity }} x {{ item.product_price }}₺</p>
+                <div class="quantity-controls">
+                    <button class="quantity-decrease" data-id="{{ item.product_id }}">-</button>
+                    <span>{{ item.quantity }}</span>
+                    <button class="quantity-increase" data-id="{{ item.product_id }}">+</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <h3>Total Price: <span id="total-price">{{ total_price }}</span>₺</h3>
+    <a id="view-cart" class="btn btn-primary cart-footer-btn" href="{{url_for('shop.display_shop')}}">Continue Shopping</a>
+    <a id="checkout" class="btn btn-primary cart-footer-btn" href="{{url_for('checkout.go_checkout')}}">Checkout</a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const cartIcon = document.getElementById('cart-icon');
+        if (cartIcon) {
+            cartIcon.style.pointerEvents = 'none';
+        }
+        setupQuantityButtons();
+    });
+</script>
+{% endblock %}
