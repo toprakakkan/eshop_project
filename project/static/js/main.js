@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const quickViewButtons = document.querySelectorAll('.quick-view-button');
     const modal = document.getElementById('product-modal');
-    const closeButton = document.querySelector('.close-button');
+    const closeButton = document.querySelector('.custom-close-button');
     const cartIcon = document.getElementById('cart-icon');
     const cartSidebar = document.getElementById('cart-sidebar');
     const closeCart = document.querySelector('.close-cart');

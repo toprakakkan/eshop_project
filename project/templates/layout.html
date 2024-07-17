@@ -15,7 +15,7 @@
             <a href="{{url_for('cart.cart_features')}}">Features</a>
             <a href="{{url_for('blog.blog_home')}}">Blog</a>
             <a href="{{url_for('about.about_page')}}">About</a>
-            <a href="#">Contact</a>
+            <a href="{{url_for('contact.contact_page')}}">Contact</a>
             
             <div class="nav-right" >
                 {% if current_user.is_authenticated %}

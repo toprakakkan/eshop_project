@@ -29,6 +29,7 @@ def create_app(config_class=Config):
     from project.shop.routes import shop
     from project.blog.routes import blog
     from project.errors.handlers import errors
+    from project.contact.routes import contact
 
     
     app.register_blueprint(main)
@@ -40,6 +41,7 @@ def create_app(config_class=Config):
     app.register_blueprint(shop)
     app.register_blueprint(blog)
     app.register_blueprint(errors)
+    app.register_blueprint(contact)
     
     
    
