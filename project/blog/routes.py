@@ -29,7 +29,7 @@ def blog_home():
     total_posts = cursor.fetchone()['total']
 
     cursor.execute("""
-        SELECT b.blog_id, b.blog_fotoUrl, b.blog_content, b.blog_title, b.blog_date, u.user_username AS author
+        SELECT b.blog_id, b.blog_fotoUrl, b.blog_content, b.blog_title, b.blog_date, b.blog_readCount, u.user_username AS author
         FROM blog b 
         JOIN user u ON b.user_id = u.user_id
         WHERE blog_deleteTime IS NULL
@@ -128,9 +128,16 @@ def post(blog_id):
     
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor(dictionary=True)
+    
+    cursor.execute("""
+        UPDATE blog
+        SET blog_readCount = blog_readCount + 1
+        WHERE blog_id = %s
+    """, (blog_id,))
+    conn.commit()
 
     cursor.execute("""
-        SELECT b.blog_id, b.blog_fotoUrl, b.blog_content, b.blog_title, b.blog_date, u.user_username AS author
+        SELECT b.blog_id, b.blog_fotoUrl, b.blog_content, b.blog_title, b.blog_date, b.blog_readCount, u.user_username AS author
         FROM blog b
         JOIN user u ON b.user_id = u.user_id
         WHERE b.blog_id = %s

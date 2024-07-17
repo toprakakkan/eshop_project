@@ -1,6 +1,6 @@
 from .forms import AddProducts
 from flask import render_template, request, Blueprint, redirect, url_for, flash, jsonify
-from flask_login import login_required, current_user
+from flask_login import login_required
 import mysql.connector
 from project.config import Config
 from project.users.decorators import admin_required
@@ -48,19 +48,21 @@ def add_product():
                 form.category_id.data,
                 form.name.data,
                 form.price.data,
-                form.description.data
+                form.description.data,
             )
 
             cursor.execute(sql, values_product)
             product_id = cursor.lastrowid
 
             sql_image = """
-            INSERT INTO Product_Picture (product_id, product_picture_url)
-            VALUES (%s, %s)
+            INSERT INTO Product_Picture (product_id, product_picture_url, product_picture_url2, product_picture_url3)
+            VALUES (%s, %s, %s, %s)
             """
             values_image = (
                 product_id,
-                form.image_url.data
+                form.image_url.data,
+                form.image_url2.data,
+                form.image_url3.data
             )
 
             cursor.execute(sql_image, values_image)
@@ -91,7 +93,7 @@ def product_detail(product_id):
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute("""
-        SELECT p.product_id, p.product_name, p.product_description, p.product_price, pp.product_picture_url 
+        SELECT p.product_id, p.product_name, p.product_description, p.product_price, pp.product_picture_url, pp.product_picture_url2, pp.product_picture_url3
         FROM Product p
         LEFT JOIN Product_Picture pp ON p.product_id = pp.product_id
         WHERE p.product_id = %s
@@ -101,4 +103,7 @@ def product_detail(product_id):
     cursor.close()
     conn.close()
 
-    return jsonify(product)
+    if product:
+        return jsonify(product)
+    else:
+        return jsonify({'error': 'Product not found'}), 404

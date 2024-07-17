@@ -2,6 +2,9 @@ from flask_login import UserMixin
 import mysql.connector
 from project.config import Config
 import bcrypt
+from flask import request, jsonify
+from flask_wtf.csrf import CSRFProtect
+from project.__init__ import create_app
 
 
 db_config = {
@@ -50,5 +53,4 @@ class User(UserMixin):
     @staticmethod
     def check_password(hashed_password, password):
         return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
-    
     

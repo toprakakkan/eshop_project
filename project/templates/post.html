@@ -14,6 +14,7 @@
             <p>{{ post.blog_content }}</p>
         </div>
         <p class="post-meta">By {{ post.author }} on <span class="relative-date" data-date="{{ post.blog_date }}"></span></p>
+        <p class="post-views">Views: {{ post.blog_readCount }}</p>
         <div class="post-categories">
             <h3>Categories:</h3>
             <ul>
@@ -85,8 +86,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="customDeleteModal" tabindex="-1" aria-labelledby="customDeleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="customDeleteModal" tabindex="-1" role="dialog" aria-labelledby="customDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="customDeleteModalLabel">Delete Post?</h5>
@@ -115,5 +116,4 @@
         });
     });
 </script>
-
 {% endblock %}

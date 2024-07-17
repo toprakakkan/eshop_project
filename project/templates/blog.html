@@ -23,8 +23,7 @@ Blog - My Blog
 
             <img src="{{ post.blog_fotoUrl }}" alt="{{ post.blog_title }}" class="post-image">
             <p class="post-content">{{ post.blog_content[:200] }}...</p>
-            <p class="post-meta">By <b>{{ post.author }}</b> on {{ post.blog_date }} | <b>{{ post.categories | join(',
-                    ') }}</b></p>
+            <p class="post-meta">By <b>{{ post.author }}</b> on {{ post.blog_date }} | <b>{{ post.categories | join(',') }}</b> | Views: {{ post.blog_readCount}}</p>
             <div class="read-more-wrapper">
                 <a href="{{ url_for('blog.post', blog_id=post.blog_id) }}" class="read-more">Read More</a>
             </div>

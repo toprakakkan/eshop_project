@@ -22,25 +22,28 @@ def display_shop():
     
     if category_id:
         cursor.execute("""
-            SELECT product_id, product_name, product_description, product_price, product_coverPictureid 
+            SELECT product_id, product_name, product_description, product_price
             FROM product 
             WHERE category_id = %s
         """, (category_id,))
     else:
         cursor.execute("""
-            SELECT product_id, product_name, product_description, product_price, product_coverPictureid 
+            SELECT product_id, product_name, product_description, product_price, product_coverPictureUrl
             FROM product
         """)
     
     products = cursor.fetchall()
     
-    cursor.execute("SELECT product_id, product_picture_url FROM Product_Picture")
+    cursor.execute("""
+        SELECT product_id, product_picture_url, product_picture_url2, product_picture_url3 
+        FROM Product_Picture
+    """)
     pictures = cursor.fetchall()
     
-    picture_dict = {pic['product_id']: pic['product_picture_url'] for pic in pictures}
+    picture_dict = {pic['product_id']: [pic['product_picture_url'], pic['product_picture_url2'], pic['product_picture_url3']] for pic in pictures}
     
     for product in products:
-        product['product_picture_url'] = picture_dict.get(product['product_id'], '')
+        product['pictures'] = picture_dict.get(product['product_id'], ['', '', ''])
     
     cursor.close()
     conn.close()
