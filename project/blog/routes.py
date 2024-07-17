@@ -6,6 +6,7 @@ import mysql.connector
 from project.users.decorators import admin_required
 from datetime import datetime
 
+
 blog = Blueprint('blog', __name__)
 
 db_config = {

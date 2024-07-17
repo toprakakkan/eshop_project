@@ -4,8 +4,6 @@
     {{ post.blog_title }} - My Blog
 {% endblock %}
 
-
-
 {% block content %}
 
 <div class="blog-home">
@@ -87,8 +85,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="customDeleteModal" tabindex="-1" role="dialog" aria-labelledby="customDeleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="customDeleteModal" tabindex="-1" aria-labelledby="customDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="customDeleteModalLabel">Delete Post?</h5>
@@ -107,7 +105,6 @@
     </div>
 </div>
 
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -117,13 +114,6 @@
             dateElement.textContent = moment(date).fromNow();
         });
     });
-
-    function openModal() {
-        document.getElementById('customDeleteModal').style.display = 'block';
-    }
-
-    function closeModal() {
-        document.getElementById('customDeleteModal').style.display = 'none';
-    }
 </script>
+
 {% endblock %}
