@@ -10,7 +10,7 @@
         <div class="cart-item">
             <img src="{{ item.product_picture_url }}" alt="{{ item.product_name }}" class="cart-item-image">
             <div>
-                <p>{{ item.product_name }} - {{ item.quantity }} x {{ item.product_price }}₺</p>
+                <p>{{ item.product_name [:20]}} - {{ item.quantity }} x {{ item.product_price }}₺</p>
                 <div class="quantity-controls">
                     <button class="quantity-decrease" data-id="{{ item.product_id }}">-</button>
                     <span>{{ item.quantity }}</span>
@@ -20,9 +20,12 @@
         </div>
         {% endfor %}
     </div>
-    <h3>Total Price: <span id="total-price">{{ total_price }}</span>₺</h3>
-    <a id="view-cart" class="btn btn-primary cart-footer-btn" href="{{url_for('shop.display_shop')}}">Continue Shopping</a>
-    <a id="checkout" class="btn btn-primary cart-footer-btn" href="{{url_for('checkout.go_checkout')}}">Checkout</a>
+    <div class="features-total">
+        <h3>Total Price: <span id="total-price">{{ total_price }}</span>₺</h3>
+        <a id="view-cart" class="btn btn-primary cart-footer-btn" href="{{url_for('shop.display_shop')}}">Continue Shopping</a>
+        <a id="checkout" class="btn btn-primary cart-footer-btn" href="{{url_for('checkout.go_checkout')}}">Checkout</a>
+    </div>
+    
 </div>
 
 <script>
