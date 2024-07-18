@@ -4,8 +4,6 @@
     {{ post.blog_title }} - My Blog
 {% endblock %}
 
-
-
 {% block content %}
 
 <div class="blog-home">
@@ -16,6 +14,7 @@
             <p>{{ post.blog_content }}</p>
         </div>
         <p class="post-meta">By {{ post.author }} on <span class="relative-date" data-date="{{ post.blog_date }}"></span></p>
+        <p class="post-views">Views: {{ post.blog_readCount }}</p>
         <div class="post-categories">
             <h3>Categories:</h3>
             <ul>
@@ -107,7 +106,6 @@
     </div>
 </div>
 
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -117,13 +115,5 @@
             dateElement.textContent = moment(date).fromNow();
         });
     });
-
-    function openModal() {
-        document.getElementById('customDeleteModal').style.display = 'block';
-    }
-
-    function closeModal() {
-        document.getElementById('customDeleteModal').style.display = 'none';
-    }
 </script>
 {% endblock %}
