@@ -1,4 +1,4 @@
-from wtforms.validators import URL, ValidationError
+from wtforms.validators import URL
 
 class OptionalURL(URL):
     def __call__(self, form, field):

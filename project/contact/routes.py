@@ -36,5 +36,14 @@ def contact_page():
 
         flash('Your message has been sent!', 'success')
         return redirect(url_for('contact.contact_page'))
+    
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT contact_address, contact_phone, contact_supEmail FROM contact WHERE contact_isDeleted = 0")
+    contact_info = cursor.fetchone()
+    cursor.close()
+    conn.close()
 
-    return render_template('contact.html', title='Contact Page', form=form)
+    return render_template('contact.html', title='Contact Page', form=form, contact_info=contact_info)
+
+

@@ -824,3 +824,14 @@ body {
 .features-total {
   margin-top: 50px;
 }
+
+.how-bor1, .how-bor2 {
+  border: 0px solid #e6e6e6;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.hov-img0 img {
+  width: 100%;
+  height: auto;
+}

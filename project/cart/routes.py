@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, flash, redirect, url_for, render_template, jsonify
+from flask import Blueprint, request, session, render_template, jsonify
 import mysql.connector
 from project.config import Config
 
