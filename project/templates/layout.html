@@ -19,7 +19,7 @@
             
             <div class="nav-right" >
                 {% if current_user.is_authenticated %}
-                    {% if current_user.is_authenticated and current_user.id == 1 %}
+                    {% if is_blogger() %}
                     <div class="create-post">
                         <a href="{{ url_for('blog.new_post') }}">Create Post</a>
                     </div>

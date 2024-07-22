@@ -10,3 +10,12 @@ def admin_required(f):
             return redirect(url_for('main.home'))
         return f(*args, **kwargs)
     return decorated_function
+
+def blogger_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or current_user.id not in (1, 6):
+            flash('You do not have permission to access this page.', 'danger')
+            return redirect(url_for('main.home'))
+        return f(*args, **kwargs)
+    return decorated_function

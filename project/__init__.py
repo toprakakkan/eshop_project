@@ -3,6 +3,7 @@ from flask import Flask
 from project.config import Config
 from flask_login import LoginManager
 from flask_jwt_extended import JWTManager
+from flask_login import current_user
 
 
 
@@ -43,8 +44,14 @@ def create_app(config_class=Config):
     app.register_blueprint(errors)
     app.register_blueprint(contact)
     
-    
-   
+
+    @app.context_processor
+    def inject_is_blogger():
+        def is_blogger():
+            return current_user.is_authenticated and current_user.id in (1, 6)
+        def is_admin():
+            return current_user.is_authenticated and current_user.id == 1
+        return dict(is_blogger=is_blogger, is_admin=is_admin)
     
    
     return app

@@ -12,6 +12,27 @@
         </div>
       {% endif %}
     {% endwith %}
-    <!-- Add additional content for the home page here -->
+    <!-- Slider -->
+    <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for product in products %}
+            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                <img src="{{ product.product_picture_url }}" class="d-block w-100" alt="{{ product.product_name }}" style="max-height: 600px; object-fit: cover;">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5 class="display-4">{{ product.product_name }}</h5>
+                    <p><a href="#" class="btn btn-primary btn-lg">Shop Now</a></p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev custom-carousel-control" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon custom-carousel-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next custom-carousel-control" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon custom-carousel-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
 </div>
 {% endblock %}

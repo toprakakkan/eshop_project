@@ -759,13 +759,14 @@ body {
   margin: 0 5px;
   padding: 10px 15px;
   border: 1px solid #ddd;
-  color: #007bff;
+  color:#5a4ab7;
   text-decoration: none;
   border-radius: 4px;
 }
 
 .page-link:hover {
   background-color: #f1f1f1;
+  color: #5a4ab7;
 }
 
 .page-link.active {
@@ -808,7 +809,7 @@ body {
 }
 
 .button-link:hover {
-  background-color: #5a4ab7;
+  background-color: #6c5ce7
 }
 
 .features-container {
@@ -835,3 +836,59 @@ body {
   width: 100%;
   height: auto;
 }
+
+
+.carousel-item img {
+  height: 600px;
+  object-fit: cover;
+}
+
+.carousel-caption {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.carousel-caption h5 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.carousel-caption p a {
+  background-color: #5a67d8;
+  border-color: #5a67d8;
+  font-size: 1.25rem;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%;
+}
+
+.custom-carousel-control {
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+}
+
+.custom-carousel-control .custom-carousel-icon {
+    background-color: rgba(0, 0, 0, 0.5); /* Dark background color */
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.custom-carousel-control .custom-carousel-icon::after {
+    color: black; /* Arrow color */
+}
+
+.carousel-control-prev {
+    left: -3.5%; /* Adjust this value to position the button further to the left */
+}
+
+.carousel-control-next {
+    right: -3.5%; /* Adjust this value to position the button further to the right */
+}
+
