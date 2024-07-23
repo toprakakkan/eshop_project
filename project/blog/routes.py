@@ -5,7 +5,7 @@ from project.config import Config
 import mysql.connector
 from project.users.decorators import blogger_required
 from datetime import datetime
-
+from flask_jwt_extended import jwt_required
 
 blog = Blueprint('blog', __name__)
 
@@ -214,6 +214,7 @@ import mysql.connector
 
 @blog.route("/blog/<int:blog_id>/update", methods=['GET', 'POST'])
 @login_required
+@blogger_required
 def update_post(blog_id):
     form = PostForm()
     try:
@@ -283,6 +284,7 @@ def update_post(blog_id):
 
 @blog.route("/blog/<int:blog_id>/delete", methods=['POST'])
 @login_required
+
 def delete_post(blog_id):
     try:
         conn = mysql.connector.connect(**db_config)
@@ -319,6 +321,7 @@ def delete_post(blog_id):
 
 @blog.route("/blog/<int:blog_id>/delete_comment/<int:blogcom_id>", methods=['POST'])
 @login_required
+@blogger_required
 def delete_comment(blog_id, blogcom_id):
     try:
         conn = mysql.connector.connect(**db_config)

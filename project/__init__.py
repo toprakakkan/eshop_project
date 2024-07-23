@@ -1,14 +1,13 @@
-import os
-from flask import Flask
+from flask import Flask, jsonify
 from project.config import Config
 from flask_login import LoginManager
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, JWTManager
 from flask_login import current_user
-
 
 
 login_manager = LoginManager()
 login_manager.login_view = 'users.login'
+jwt = JWTManager()
 
 
 def create_app(config_class=Config):
@@ -16,9 +15,7 @@ def create_app(config_class=Config):
     app.config.from_object(Config)
     
     login_manager.init_app(app)
-    jwt = JWTManager(app)
-    
-    
+    jwt.init_app(app)
     
     
     from project.main.routes import main
@@ -31,7 +28,9 @@ def create_app(config_class=Config):
     from project.blog.routes import blog
     from project.errors.handlers import errors
     from project.contact.routes import contact
-
+    from project.tickets.routes import tickets
+    from project.auth.routes import auth
+    
     
     app.register_blueprint(main)
     app.register_blueprint(product)
@@ -43,8 +42,10 @@ def create_app(config_class=Config):
     app.register_blueprint(blog)
     app.register_blueprint(errors)
     app.register_blueprint(contact)
-    
-
+    app.register_blueprint(tickets)
+    app.register_blueprint(auth)
+   
+   
     @app.context_processor
     def inject_is_blogger():
         def is_blogger():

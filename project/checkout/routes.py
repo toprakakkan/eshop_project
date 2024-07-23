@@ -2,6 +2,7 @@ from flask import Blueprint, request, session, flash, redirect, url_for, render_
 import mysql.connector
 from project.config import Config
 from project.checkout.forms import CheckoutForm
+from flask_jwt_extended import jwt_required
 
 checkout = Blueprint('checkout', __name__)
 

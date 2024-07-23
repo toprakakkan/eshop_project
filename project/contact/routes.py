@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash
 import mysql.connector
 from project.contact.forms import CreateTicket
 from project.config import Config
-
+from flask_jwt_extended import jwt_required
 
 contact = Blueprint('contact', __name__)
 

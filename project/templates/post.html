@@ -39,10 +39,12 @@
                             <div class="comment-content">
                                 <p class="comment-author"><strong>@{{ comment.author }}</strong> <span class="comment-date" data-date="{{ comment.blogcom_date }}"></span></p>
                                 <p class="comment-text">{{ comment.blogcom_content }}</p>
-                                {% if current_user.is_authenticated and current_user.id == 1 %}
+                                {% if current_user.is_authenticated %}
+                                    {%if is_admin() %}
                                     <form action="{{ url_for('blog.delete_comment', blog_id=post.blog_id, blogcom_id=comment.blogcom_id) }}" method="POST" style="display:inline;">
                                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                     </form>
+                                    {%endif%}
                                 {% endif %}
                             </div>
                         </li>

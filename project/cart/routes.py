@@ -1,6 +1,7 @@
 from flask import Blueprint, request, session, render_template, jsonify
 import mysql.connector
 from project.config import Config
+from flask_jwt_extended import jwt_required
 
 cart = Blueprint('cart', __name__)
 

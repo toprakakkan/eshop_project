@@ -837,10 +837,9 @@ body {
   height: auto;
 }
 
-
 .carousel-item img {
-  height: 600px;
-  object-fit: cover;
+  height: 700px; /* Increased height */
+  object-fit: contain;
 }
 
 .carousel-caption {
@@ -855,17 +854,22 @@ body {
   margin-bottom: 20px;
 }
 
-.carousel-caption p a {
-  background-color: #5a67d8;
-  border-color: #5a67d8;
+.carousel-caption p a.custom-shop-btn {
+  background-color: #6c5ce7; 
+  border-color: #6c5ce7;
   font-size: 1.25rem;
-  padding: 10px 20px;
+  padding: 10px 60px;
   border-radius: 5px;
+}
+
+.carousel-caption p a.custom-shop-btn:hover{
+  background-color: #5a4ab7;
+  border-color: #5a4ab7;
 }
 
 .carousel-control-prev,
 .carousel-control-next {
-    width: 5%;
+    width: 8%; /* Increased size */
 }
 
 .custom-carousel-control {
@@ -875,20 +879,59 @@ body {
 }
 
 .custom-carousel-control .custom-carousel-icon {
-    background-color: rgba(0, 0, 0, 0.5); /* Dark background color */
+    background-color: rgba(0, 0, 0, 0.5); 
     border-radius: 50%;
-    padding: 10px;
+    padding: 20px; 
 }
 
 .custom-carousel-control .custom-carousel-icon::after {
-    color: black; /* Arrow color */
+    color: black; 
+    font-size: 1.5rem; 
 }
 
 .carousel-control-prev {
-    left: -3.5%; /* Adjust this value to position the button further to the left */
+    left: -1.5%; 
 }
 
 .carousel-control-next {
-    right: -3.5%; /* Adjust this value to position the button further to the right */
+    right: -1.5%; 
 }
+
+.mt-5 {
+  margin-top: 0 !important;
+}
+
+.carousel {
+  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.carousel-item {
+  transition: opacity 0.2s ease-in-out;
+  opacity: 0;
+}
+
+.carousel-item.active {
+  opacity: 1;
+}
+
+.carousel-caption {
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  transform: translateY(10px);
+  opacity: 0;
+}
+
+.carousel-item.active .carousel-caption {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.carousel-control-prev:hover .custom-carousel-icon,
+.carousel-control-next:hover .custom-carousel-icon {
+  background-color: rgba(0, 0, 0, 0.7); /* Darker on hover */
+  transform: scale(1.1); /* Slightly enlarge on hover */
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
 
