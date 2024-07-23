@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}Contact Page{% endblock %}
+{% block title %}Contact{% endblock %}
 
 {% block content %}
 
@@ -27,7 +27,7 @@
                 </div>
                 <div class="mb-3">
                     {{ form.content.label(class="form-label") }}
-                    {{ form.content(class="form-control", placeholder="How Can We Help?") }}
+                    {{ form.content(class="form-control",style=" resize: none; height: 150px", placeholder="How Can We Help?") }}
                     {% for error in form.content.errors %}
                     <div class="text-danger">{{ error }}</div>
                     {% endfor %}
@@ -43,11 +43,11 @@
             <h2>Contact Information</h2>
             <div class="contact-info">
                 <p><strong>Address:</strong></p>
-                <p>Coza Store Center 8th floor, 379 Hudson St, New York, NY 10018 US</p>
+                <p>{{ contact_info.contact_address }}</p>
                 <p><strong>Let's Talk:</strong></p>
-                <p>+1 800 1236879</p>
+                <p>{{ contact_info.contact_phone }}</p>
                 <p><strong>Sale Support:</strong></p>
-                <p>contact@example.com</p>
+                <p>{{ contact_info.contact_supEmail }}</p>
             </div>
         </div>
     </div>

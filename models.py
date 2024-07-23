@@ -10,7 +10,7 @@ from project.__init__ import create_app
 db_config = {
     'user': Config.DB_USER,
     'password': Config.DB_PASS,
-    'host': Config.DB_HOST or 'localhost',
+    'host': Config.DB_HOST,
     'database': Config.DB_NAME
 }
 

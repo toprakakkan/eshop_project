@@ -3,9 +3,9 @@ from flask_login import current_user, login_required
 from project.blog.forms import PostForm, AddComment
 from project.config import Config
 import mysql.connector
-from project.users.decorators import admin_required
+from project.users.decorators import blogger_required
 from datetime import datetime
-
+from flask_jwt_extended import jwt_required
 
 blog = Blueprint('blog', __name__)
 
@@ -63,7 +63,7 @@ def blog_home():
 
 @blog.route("/blog/new", methods=['GET', 'POST'])
 @login_required
-@admin_required
+@blogger_required
 def new_post():
     form = PostForm()
 
@@ -160,7 +160,7 @@ def post(blog_id):
     cursor.execute("""
         SELECT blogcom_id, blogcom_content, blogcom_date, blogcom_name AS author
         FROM blog_comments
-        WHERE blog_id = %s
+        WHERE blog_id = %s AND blogcom_isDeleted = 0
         ORDER BY blogcom_date DESC
     """, (blog_id,))
     comments = cursor.fetchall()
@@ -207,8 +207,14 @@ def post(blog_id):
     return render_template('post.html', post=post, comments=comments, form=form)
 
 
+from flask import abort, flash, redirect, render_template, request, url_for
+from flask_login import login_required, current_user
+from datetime import datetime
+import mysql.connector
+
 @blog.route("/blog/<int:blog_id>/update", methods=['GET', 'POST'])
 @login_required
+@blogger_required
 def update_post(blog_id):
     form = PostForm()
     try:
@@ -226,7 +232,7 @@ def update_post(blog_id):
             abort(404)
 
         if post['user_id'] != current_user.id:
-            abort(403)
+            abort(403, description="You don't have permission to update this post.")
 
         if request.method == 'POST' and form.validate():
             current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -276,10 +282,9 @@ def update_post(blog_id):
     return render_template('update.html', title='Update Post', form=form, blog_id=blog_id)
 
 
-
-
 @blog.route("/blog/<int:blog_id>/delete", methods=['POST'])
 @login_required
+
 def delete_post(blog_id):
     try:
         conn = mysql.connector.connect(**db_config)
@@ -312,3 +317,41 @@ def delete_post(blog_id):
             conn.close()
 
     return redirect(url_for('blog.blog_home'))
+
+
+@blog.route("/blog/<int:blog_id>/delete_comment/<int:blogcom_id>", methods=['POST'])
+@login_required
+@blogger_required
+def delete_comment(blog_id, blogcom_id):
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT * FROM blog_comments WHERE blogcom_id = %s", (blogcom_id,))
+        comment = cursor.fetchone()
+
+        if not comment:
+            abort(404)
+
+        
+        if current_user.id != 1:
+            abort(403)
+
+        deletion_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        cursor.execute("UPDATE blog_comments SET blogcom_deleteTime = %s, blogcom_isDeleted = 1 WHERE blogcom_id = %s", (deletion_time, blogcom_id))
+        conn.commit()
+
+        flash('The comment has been successfully deleted!', 'success')
+
+    except mysql.connector.Error as err:
+        print(f"Database Error: {err}")
+        flash('Failed to delete comment. Please try again.', 'danger')
+    except Exception as e:
+        print(f"Unexpected Error: {e}")
+        flash('An unexpected error occurred. Please try again.', 'danger')
+    finally:
+        if conn.is_connected():
+            cursor.close()
+            conn.close()
+
+    return redirect(url_for('blog.post', blog_id=blog_id))

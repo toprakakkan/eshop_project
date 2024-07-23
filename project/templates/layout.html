@@ -19,7 +19,17 @@
             
             <div class="nav-right" >
                 {% if current_user.is_authenticated %}
-                    {% if current_user.is_authenticated and current_user.id == 1 %}
+                    {% if is_admin() and request.path == url_for('contact.contact_page') %}
+                    <div class="create-post">
+                        <a href="{{url_for('tickets.tickets_page')}}">View Tickets</a>
+                    </div>
+                    {% endif %}
+                    {% if is_admin() and request.path == url_for('shop.display_shop') %}
+                    <div class="create-post">
+                        <a href="{{ url_for('product.add_product') }}">Add Product</a>
+                    </div>
+                    {% endif %}
+                    {% if is_blogger() and request.path == url_for('blog.blog_home') %}
                     <div class="create-post">
                         <a href="{{ url_for('blog.new_post') }}">Create Post</a>
                     </div>

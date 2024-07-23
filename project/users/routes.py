@@ -1,12 +1,11 @@
 from flask import Flask, render_template, redirect, url_for, request, flash, Blueprint, jsonify, make_response
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_login import login_user, logout_user, login_required, current_user
 from models import User
 from project.config import Config
 from project import login_manager
-from project.users.forms import LoginForm
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from project.users.forms import LoginForm, RegisterForm
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 import mysql.connector
-from project.users.forms import RegisterForm
 
 users = Blueprint('users', __name__)
 
@@ -17,7 +16,7 @@ def load_user(user_id):
 db_config = {
     'user': Config.DB_USER,
     'password': Config.DB_PASS,
-    'host': Config.DB_HOST or 'localhost',
+    'host': Config.DB_HOST,
     'database': Config.DB_NAME
 }
 
@@ -32,14 +31,13 @@ def login():
             login_user(user)
             access_token = create_access_token(identity={'username': username})
             response = make_response(redirect(url_for('main.home')))
-            response.set_cookie('access_token', access_token)
+            response.set_cookie('access_token', access_token, httponly=True, samesite='Strict')
             flash('Logged in successfully.', 'success')
-            if user.id == 1:
-                return redirect(url_for('main.home'))
-            else:
-                return response 
+            return response 
         flash('Invalid username or password.', 'danger')
     return render_template('login.html', form=form)
+
+
 
 @users.route('/register', methods=['GET', 'POST'])
 def register():
@@ -66,11 +64,13 @@ def register():
 @login_required
 def logout():
     logout_user()
+    response = make_response(redirect(url_for('users.login')))
+    response.set_cookie('access_token', '', expires=0)
     flash('You have been logged out.', 'success')
-    return redirect(url_for('users.login'))
+    return response
 
 @users.route('/protected', methods=['GET'])
 @jwt_required()
 def protected():
-    current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
+     current_user = get_jwt_identity()
+     return jsonify(logged_in_as=current_user), 200
