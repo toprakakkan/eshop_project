@@ -14,7 +14,7 @@ db_config = {
     'database': Config.DB_NAME
 }
 
-TICKETS_PER_PAGE = 20  # Set the number of tickets per page
+TICKETS_PER_PAGE = 20  
 
 @tickets.route("/tickets", methods=['GET'])
 @login_required
@@ -26,13 +26,13 @@ def tickets_page():
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor(dictionary=True)
 
-    # Query to get the total count of tickets
+    
     count_query = "SELECT COUNT(*) AS count FROM contact_tickets WHERE ticket_isDeleted = 0"
     cursor.execute(count_query)
     total_tickets = cursor.fetchone()['count']
     total_pages = (total_tickets + TICKETS_PER_PAGE - 1) // TICKETS_PER_PAGE
 
-    # Main query to get tickets with pagination
+    
     query = """
     SELECT ticket_id, ticket_email, ticket_content 
     FROM contact_tickets 
