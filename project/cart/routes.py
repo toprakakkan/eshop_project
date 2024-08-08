@@ -1,16 +1,6 @@
 from flask import Blueprint, request, session, render_template, jsonify
-import mysql.connector
-from project.config import Config
-from flask_jwt_extended import jwt_required
-
+from project.models.cart_models import CartModel  
 cart = Blueprint('cart', __name__)
-
-db_config = {
-    'user': Config.DB_USER,
-    'password': Config.DB_PASS,
-    'host': Config.DB_HOST,
-    'database': Config.DB_NAME
-}
 
 @cart.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
@@ -33,25 +23,14 @@ def add_to_cart():
 def cart_items():
     cart_items = []
     total_price = 0
-    conn = mysql.connector.connect(**db_config)
-    cursor = conn.cursor(dictionary=True)
     
     for product_id, quantity in session.get('cart', {}).items():
-        cursor.execute("""
-            SELECT p.product_id, p.product_name, p.product_price, pp.product_picture_url
-            FROM product p
-            LEFT JOIN product_picture pp ON p.product_id = pp.product_id
-            WHERE p.product_id = %s
-        """, (product_id,))
-        product = cursor.fetchone()
+        product = CartModel.get_product_details(product_id)
         if product:
             product['quantity'] = quantity
             product['total_price'] = product['product_price'] * quantity
             cart_items.append(product)
             total_price += product['total_price']
-
-    cursor.close()
-    conn.close()
 
     return jsonify(cart_items=cart_items, total_price=total_price)
 
@@ -74,30 +53,17 @@ def update_cart_quantity():
     session.modified = True
     return jsonify(success=True)
 
-
 @cart.route('/features')
 def cart_features():
     cart_items = []
     total_price = 0
-    conn = mysql.connector.connect(**db_config)
-    cursor = conn.cursor(dictionary=True)
     
     for product_id, quantity in session.get('cart', {}).items():
-        cursor.execute("""
-            SELECT p.product_id, p.product_name, p.product_price, pp.product_picture_url
-            FROM product p
-            LEFT JOIN product_picture pp ON p.product_id = pp.product_id
-            WHERE p.product_id = %s
-        """, (product_id,))
-        product = cursor.fetchone()
+        product = CartModel.get_product_details(product_id)
         if product:
             product['quantity'] = quantity
             product['total_price'] = product['product_price'] * quantity
             cart_items.append(product)
             total_price += product['total_price']
 
-    cursor.close()
-    conn.close()
-
     return render_template('features.html', cart_items=cart_items, total_price=total_price, is_features=True)
-
