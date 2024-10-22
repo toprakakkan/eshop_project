@@ -1,7 +1,7 @@
-from flask import Flask, render_template, redirect, url_for, request, flash, Blueprint, jsonify, make_response
-from flask_login import login_user, logout_user, login_required, current_user
+from flask import render_template, redirect, url_for,flash, Blueprint, jsonify, make_response
+from flask_login import login_user, logout_user, login_required
 from models import User
-from project.config import Config
+from project.config import db_connection
 from project import login_manager
 from project.users.forms import LoginForm, RegisterForm
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -12,13 +12,6 @@ users = Blueprint('users', __name__)
 @login_manager.user_loader
 def load_user(user_id):
     return User.get(user_id)
-
-db_config = {
-    'user': Config.DB_USER,
-    'password': Config.DB_PASS,
-    'host': Config.DB_HOST,
-    'database': Config.DB_NAME
-}
 
 @users.route('/login', methods=['GET', 'POST'])
 def login():
@@ -47,8 +40,7 @@ def register():
         password = form.password.data
         hashed_password = User.hash_password(password)
         try:
-            conn = mysql.connector.connect(**db_config)
-            cursor = conn.cursor()
+            conn, cursor = db_connection()
             cursor.execute("INSERT INTO user (user_username, user_password) VALUES (%s, %s)", (username, hashed_password))
             conn.commit()
             cursor.close()

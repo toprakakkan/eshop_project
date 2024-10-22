@@ -30,6 +30,7 @@ def create_app(config_class=Config):
     from project.contact.routes import contact
     from project.tickets.routes import tickets
     from project.auth.routes import auth
+    from project.models.routes import models
     
     
     app.register_blueprint(main)
@@ -44,7 +45,7 @@ def create_app(config_class=Config):
     app.register_blueprint(contact)
     app.register_blueprint(tickets)
     app.register_blueprint(auth)
-   
+    app.register_blueprint(models)
    
     @app.context_processor
     def inject_is_blogger():

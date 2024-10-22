@@ -1,0 +1,7 @@
+flask
+flask-login
+flask-jwt-extended
+mysql-connector-python
+wtforms
+flask-wtf
+bcrypt
